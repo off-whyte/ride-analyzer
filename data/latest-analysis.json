@@ -1,0 +1,85 @@
+{
+  "generated_at": "2026-04-09T20:00:00Z",
+  "activity_id": "i138521071",
+  "activity_date": "2026-04-09T13:32:18",
+  "ride_type": "Endurance/Z2",
+  "duration_minutes": 90.3,
+  "summary": {
+    "avg_power": 146,
+    "normalized_power": 150,
+    "intensity_factor": 0.60,
+    "tss": 32.6,
+    "avg_hr": 137,
+    "max_hr": 155,
+    "avg_cadence": 91,
+    "avg_respiration": 27.8,
+    "distance_km": 44.2
+  },
+  "aerobic_indicators": {
+    "hr_drift_pct": 4.2,
+    "cardiac_decoupling_pct": 3.8,
+    "ef_trend": [
+      {"minute": 0, "ef": 0.98},
+      {"minute": 10, "ef": 1.02},
+      {"minute": 20, "ef": 1.06},
+      {"minute": 30, "ef": 1.04},
+      {"minute": 40, "ef": 1.09},
+      {"minute": 50, "ef": 1.08},
+      {"minute": 60, "ef": 1.11},
+      {"minute": 70, "ef": 1.13}
+    ],
+    "resp_rate_trend": [
+      {"minute": 0, "resp": 22.4},
+      {"minute": 10, "resp": 24.1},
+      {"minute": 20, "resp": 25.8},
+      {"minute": 30, "resp": 26.0},
+      {"minute": 40, "resp": 27.2},
+      {"minute": 50, "resp": 27.8},
+      {"minute": 60, "resp": 28.1},
+      {"minute": 70, "resp": 26.4}
+    ]
+  },
+  "zone_distribution": {
+    "z1_minutes": 12.5,
+    "z2_minutes": 58.3,
+    "z3_minutes": 15.2,
+    "z4_minutes": 4.3,
+    "z5_minutes": 0.0,
+    "z6_minutes": 0.0
+  },
+  "weekly_context": {
+    "total_hours": 6.5,
+    "total_tss": 210,
+    "ride_count": 4,
+    "hour_target": 10,
+    "days_remaining_in_week": 2
+  },
+  "season": {
+    "current_phase": "base",
+    "target_event": "CX Season Opener",
+    "weeks_to_target": 22
+  },
+  "left_right_balance": {
+    "avg_left_pct": 51.0,
+    "flag": false
+  },
+  "next_workout": {
+    "type": "z2",
+    "description": "2-hour Z2 ride. Power in the lower half of Z2 if tired, upper half if feeling good.",
+    "power_target": "138-188W",
+    "rationale": "6.5 hours done, 3.5 to go with 2 days left. Steady Z2 work keeps you on track."
+  },
+  "analysis": {
+    "observations": [
+      "EF range across 10-min windows: 0.98 \u2013 1.13 W/bpm",
+      "Respiration trend: 22.4 \u2192 26.4 breaths/min (rising through ride)."
+    ],
+    "flags": [],
+    "positives": [
+      "Good Z2 endurance ride \u2014 exactly what base phase calls for.",
+      "Excellent zone discipline \u2014 only 4 min above Z2.",
+      "HR drift: 4.2% over the ride \u2014 under 5% is solid for base building.",
+      "Cardiac decoupling: 3.8% \u2014 aerobic system is holding well."
+    ]
+  }
+}

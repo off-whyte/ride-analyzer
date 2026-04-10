@@ -1,0 +1,12 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# React / Node
+app/node_modules/
+app/dist/
+
+# Mac
+.DS_Store

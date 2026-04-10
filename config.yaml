@@ -1,0 +1,37 @@
+athlete:
+  ftp: 250
+  max_hr: 193
+  resting_hr: 50
+  weight_kg: 80.3  # 177 lbs
+
+intervals_icu:
+  athlete_id: "0"  # 0 = self
+
+season:
+  phases:
+    - name: base
+      start: "2026-04-01"
+      end: "2026-05-31"
+    - name: build1
+      start: "2026-06-01"
+      end: "2026-07-15"
+    - name: build2
+      start: "2026-07-16"
+      end: "2026-08-31"
+    - name: peak
+      start: "2026-09-01"
+      end: "2026-10-15"
+  target_event: "CX Season Opener"
+  target_date: "2026-09-12"
+
+training:
+  weekly_hour_target: 10
+  rides_per_week_target: 5
+
+zones:  # percentages of FTP
+  z1: [0, 55]
+  z2: [55, 75]
+  z3: [75, 90]
+  z4: [90, 105]
+  z5: [105, 120]
+  z6: [120, 999]
