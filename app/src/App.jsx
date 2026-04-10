@@ -106,6 +106,26 @@ const styles = {
     textAlign: 'center',
     marginTop: 16,
   },
+  triggerBtn: {
+    background: 'var(--green)',
+    color: '#000',
+    border: 'none',
+    borderRadius: 8,
+    padding: '10px 18px',
+    fontSize: 14,
+    fontWeight: 600,
+    cursor: 'pointer',
+  },
+  triggerBtnSmall: {
+    background: 'transparent',
+    color: 'var(--text-muted)',
+    border: '1px solid var(--surface)',
+    borderRadius: 6,
+    padding: '4px 10px',
+    fontSize: 12,
+    fontWeight: 600,
+    cursor: 'pointer',
+  },
   loadingState: {
     display: 'flex',
     flexDirection: 'column',
@@ -137,13 +157,37 @@ function hrDriftColor(pct) {
   return 'var(--red)'
 }
 
+const REPO = 'off-whyte/ride-analyzer'
+const WORKFLOW = 'analyze-ride.yml'
+
+async function triggerWorkflow(token) {
+  const res = await fetch(
+    `https://api.github.com/repos/${REPO}/actions/workflows/${WORKFLOW}/dispatches`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/vnd.github+json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ ref: 'main' }),
+    }
+  )
+  if (!res.ok) {
+    const text = await res.text()
+    throw new Error(`GitHub API ${res.status}: ${text}`)
+  }
+}
+
 export default function App() {
   const [data, setData] = useState(null)
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [triggering, setTriggering] = useState(false)
+  const [triggered, setTriggered] = useState(false)
 
   useEffect(() => {
-    fetch('/data/latest-analysis.json')
+    fetch('data/latest-analysis.json')
       .then(r => {
         if (!r.ok) throw new Error(`HTTP ${r.status}`)
         return r.json()
@@ -151,6 +195,30 @@ export default function App() {
       .then(json => { setData(json); setLoading(false) })
       .catch(err => { setError(err.message); setLoading(false) })
   }, [])
+
+  async function handleTrigger() {
+    let token = localStorage.getItem('gh_token')
+    if (!token) {
+      token = window.prompt(
+        'Enter a GitHub personal access token with Actions (workflow) write permission.\n\nThis is saved to localStorage on this device only.'
+      )
+      if (!token) return
+      localStorage.setItem('gh_token', token.trim())
+      token = token.trim()
+    }
+    setTriggering(true)
+    try {
+      await triggerWorkflow(token)
+      setTriggered(true)
+    } catch (e) {
+      if (e.message.includes('401') || e.message.includes('403')) {
+        localStorage.removeItem('gh_token')
+      }
+      alert(`Failed to trigger workflow:\n${e.message}`)
+    } finally {
+      setTriggering(false)
+    }
+  }
 
   if (loading) {
     return (
@@ -169,9 +237,18 @@ export default function App() {
         <div style={styles.errorState}>
           <div style={{ fontSize: 28, marginBottom: 8 }}>⚠️</div>
           <div style={{ fontWeight: 600, marginBottom: 4 }}>No analysis found</div>
-          <div style={{ fontSize: 13, color: 'var(--text-muted)' }}>
-            Trigger the "Analyze Ride" action from GitHub to generate data.
+          <div style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 16 }}>
+            Run the analyzer to pull your latest ride from Intervals.icu.
           </div>
+          {triggered ? (
+            <div style={{ fontSize: 13, color: 'var(--green)' }}>
+              Analysis running… check back in a minute.
+            </div>
+          ) : (
+            <button onClick={handleTrigger} disabled={triggering} style={styles.triggerBtn}>
+              {triggering ? 'Starting…' : 'Analyze Latest Ride'}
+            </button>
+          )}
         </div>
       </div>
     )
@@ -187,7 +264,16 @@ export default function App() {
       {/* Header */}
       <div style={styles.header}>
         <span style={styles.title}>Ride Analyzer</span>
-        <span style={styles.badge}>{data.ride_type}</span>
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+          {triggered ? (
+            <span style={{ fontSize: 12, color: 'var(--green)' }}>Running…</span>
+          ) : (
+            <button onClick={handleTrigger} disabled={triggering} style={styles.triggerBtnSmall}>
+              {triggering ? '…' : 'Run'}
+            </button>
+          )}
+          <span style={styles.badge}>{data.ride_type}</span>
+        </div>
       </div>
 
       {/* Ride title */}
