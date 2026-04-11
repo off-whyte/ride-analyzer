@@ -231,7 +231,7 @@ export default function App() {
       .catch(err => { setError(err.message); setLoading(false) })
   }, [])
 
-  async function pollRun(token, triggeredAt) {
+  async function pollRun(token, triggeredAt, prevActivityId) {
     // Wait briefly for the run to appear
     await new Promise(r => setTimeout(r, 3000))
     let runId = null
@@ -249,13 +249,16 @@ export default function App() {
       if (!info) { await new Promise(r => setTimeout(r, 3000)); continue }
 
       if (info.conclusion === 'success') {
-        setRunStatus('done')
-        // Reload analysis data
         try {
           const json = await loadData()
-          setData(json)
-          setError(null)
-        } catch (_) {}
+          if (json.activity_id === prevActivityId) {
+            setRunStatus('up_to_date')
+          } else {
+            setData(json)
+            setError(null)
+            setRunStatus('done')
+          }
+        } catch (_) { setRunStatus('done') }
         return
       }
       if (info.conclusion && info.conclusion !== 'success') {
@@ -293,7 +296,7 @@ export default function App() {
       return
     }
     setTriggering(false)
-    pollRun(token, triggeredAt)
+    pollRun(token, triggeredAt, data?.activity_id ?? null)
   }
 
   if (loading) {
@@ -341,8 +344,10 @@ export default function App() {
       <div style={styles.header}>
         <span style={styles.title}>Ride Analyzer</span>
         <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-          {runStatus && runStatus !== 'done' && runStatus !== 'failed' ? (
+          {runStatus && runStatus !== 'done' && runStatus !== 'failed' && runStatus !== 'up_to_date' ? (
             <span style={{ fontSize: 11, color: 'var(--green)', maxWidth: 140, textAlign: 'right' }}>{runStatus}</span>
+          ) : runStatus === 'up_to_date' ? (
+            <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>Already up to date</span>
           ) : runStatus === 'failed' ? (
             <span style={{ fontSize: 11, color: 'var(--red)' }}>Failed</span>
           ) : (
