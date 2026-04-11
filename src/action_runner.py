@@ -168,7 +168,7 @@ def main() -> None:
     print("Fetching latest activity...")
     activity = client.get_latest_activity()
     if not activity:
-        print("No recent activity found.", file=sys.stderr)
+        print("No recent cycling activity found in the last 14 days.", file=sys.stderr)
         sys.exit(1)
 
     activity_id = activity["id"]

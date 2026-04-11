@@ -41,16 +41,20 @@ class IntervalsClient:
         resp = self._get(f"/athlete/{self.athlete_id}/activities", params=params)
         return resp.json()
 
+    CYCLING_TYPES = {"Ride", "VirtualRide", "EBikeRide", "MountainBikeRide", "GravelRide", "Handcycle"}
+
     def get_latest_activity(self) -> Optional[Dict[str, Any]]:
-        """Return the most recent activity."""
+        """Return the most recent cycling activity."""
         today = datetime.date.today()
-        oldest = today - datetime.timedelta(days=7)
+        oldest = today - datetime.timedelta(days=14)
         activities = self.list_activities(oldest=oldest, newest=today)
         if not activities:
             return None
-        # Activities returned newest first, but sort by start_date_local to be safe
-        activities.sort(key=lambda a: a.get("start_date_local", ""), reverse=True)
-        return activities[0]
+        rides = [a for a in activities if a.get("type") in self.CYCLING_TYPES]
+        if not rides:
+            return None
+        rides.sort(key=lambda a: a.get("start_date_local", ""), reverse=True)
+        return rides[0]
 
     def get_streams(self, activity_id: str) -> list:
         """Fetch 1-second stream data as parsed JSON (columnar format)."""
