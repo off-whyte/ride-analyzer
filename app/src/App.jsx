@@ -4,6 +4,7 @@ import NextWorkout from './components/NextWorkout'
 import ZoneBar from './components/ZoneBar'
 import EfSparkline from './components/EfSparkline'
 import WeeklyProgress from './components/WeeklyProgress'
+import HistoryTable from './components/HistoryTable'
 
 const styles = {
   app: {
@@ -116,6 +117,30 @@ const styles = {
     fontWeight: 600,
     cursor: 'pointer',
   },
+  tabBar: {
+    display: 'flex',
+    background: 'var(--surface)',
+    borderRadius: 8,
+    padding: 3,
+    marginBottom: 20,
+    gap: 3,
+  },
+  tab: {
+    flex: 1,
+    textAlign: 'center',
+    padding: '6px 0',
+    borderRadius: 6,
+    fontSize: 13,
+    fontWeight: 600,
+    cursor: 'pointer',
+    border: 'none',
+    background: 'transparent',
+    color: 'var(--text-muted)',
+  },
+  tabActive: {
+    background: 'var(--surface2, #2a2a2a)',
+    color: 'var(--text)',
+  },
   triggerBtnSmall: {
     background: 'transparent',
     color: 'var(--text-muted)',
@@ -216,6 +241,8 @@ export default function App() {
   const [loading, setLoading] = useState(true)
   const [triggering, setTriggering] = useState(false)
   const [runStatus, setRunStatus] = useState(null) // null | 'queued' | step label | 'done' | 'failed'
+  const [tab, setTab] = useState('latest')
+  const [historyData, setHistoryData] = useState([])
 
   function loadData() {
     return fetch('data/latest-analysis.json')
@@ -229,6 +256,11 @@ export default function App() {
     loadData()
       .then(json => { setData(json); setLoading(false) })
       .catch(err => { setError(err.message); setLoading(false) })
+
+    fetch('data/ride-history.json')
+      .then(r => r.ok ? r.json() : [])
+      .then(json => setHistoryData(json))
+      .catch(() => {})
   }, [])
 
   async function pollRun(token, triggeredAt, prevActivityId) {
@@ -257,6 +289,11 @@ export default function App() {
             setData(json)
             setError(null)
             setRunStatus('done')
+            // Reload history too
+            fetch('data/ride-history.json')
+              .then(r => r.ok ? r.json() : [])
+              .then(h => setHistoryData(h))
+              .catch(() => {})
           }
         } catch (_) { setRunStatus('done') }
         return
@@ -359,6 +396,22 @@ export default function App() {
         </div>
       </div>
 
+      {/* Tab toggle */}
+      <div style={styles.tabBar}>
+        {['latest', 'history'].map(t => (
+          <button
+            key={t}
+            style={{ ...styles.tab, ...(tab === t ? styles.tabActive : {}) }}
+            onClick={() => setTab(t)}
+          >
+            {t.charAt(0).toUpperCase() + t.slice(1)}
+          </button>
+        ))}
+      </div>
+
+      {tab === 'history' && <HistoryTable rides={historyData} />}
+
+      {tab === 'latest' && <>
       {/* Ride title */}
       <div style={styles.rideMeta}>
         {formatDate(data.activity_date)}
@@ -449,6 +502,7 @@ export default function App() {
       <div style={styles.timestamp}>
         Updated {new Date(data.generated_at).toLocaleString()}
       </div>
+      </>}
     </div>
   )
 }

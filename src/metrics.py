@@ -67,6 +67,7 @@ class RideMetrics:
     ef_windows: List[Tuple[int, float]] = field(default_factory=list)  # (minute, EF)
     respiration_trend: Optional[Tuple[float, float]] = None  # (start_avg, end_avg)
     peak_powers: Optional[PeakPowers] = None
+    kj: Optional[float] = None
     ftp_used: int = 250
 
 
@@ -179,6 +180,7 @@ def compute_metrics(ride: Ride, ftp: int) -> RideMetrics:
     if watts:
         m.avg_power = _avg(watts)
         m.normalized_power = normalized_power(watts)
+        m.kj = round(m.avg_power * m.duration_seconds / 1000, 1) if m.avg_power else None
         m.zones = zone_distribution(watts, ftp)
         m.peak_powers = compute_peak_powers(watts)
 

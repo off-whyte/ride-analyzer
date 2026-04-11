@@ -20,6 +20,58 @@ from src.analysis import analyze, get_season_phase, classify_ride
 from src.workout_suggest import suggest_next_workout
 
 
+def iso_week(date_str: str) -> str:
+    d = datetime.date.fromisoformat(date_str)
+    y, w, _ = d.isocalendar()
+    return f"{y}-W{w:02d}"
+
+
+def append_history(activity: dict, metrics, analysis_result, out_path: Path) -> None:
+    """Append a lean record to ride-history.json, deduplicating on activity_id."""
+    activity_id = activity.get("id", "")
+    date_str = activity.get("start_date_local", "")[:10]
+
+    record = {
+        "activity_id": activity_id,
+        "date": date_str,
+        "week": iso_week(date_str) if date_str else "",
+        "ride_type": analysis_result.ride_classification.name.lower(),
+        "duration_minutes": round(metrics.duration_seconds / 60, 1),
+        "avg_power": round(metrics.avg_power) if metrics.avg_power else None,
+        "normalized_power": round(metrics.normalized_power) if metrics.normalized_power else None,
+        "intensity_factor": metrics.intensity_factor,
+        "tss": metrics.tss,
+        "kj": metrics.kj,
+        "avg_hr": metrics.avg_hr,
+        "ef": round(metrics.efficiency_factor, 3) if metrics.efficiency_factor else None,
+        "hr_drift_pct": metrics.hr_drift_pct,
+        "zone_minutes": {
+            "z1": round(metrics.zones.z1_seconds / 60, 1),
+            "z2": round(metrics.zones.z2_seconds / 60, 1),
+            "z3": round(metrics.zones.z3_seconds / 60, 1),
+            "z4": round(metrics.zones.z4_seconds / 60, 1),
+            "z5": round(metrics.zones.z5_seconds / 60, 1),
+            "z6": round(metrics.zones.z6_seconds / 60, 1),
+        } if metrics.zones else {},
+    }
+
+    history = []
+    if out_path.exists():
+        with open(out_path) as f:
+            try:
+                history = json.load(f)
+            except json.JSONDecodeError:
+                history = []
+
+    # Deduplicate on activity_id
+    history = [r for r in history if r.get("activity_id") != activity_id]
+    history.append(record)
+    history.sort(key=lambda r: r.get("date", ""))
+
+    with open(out_path, "w") as f:
+        json.dump(history, f, indent=2)
+
+
 def load_config() -> dict:
     config_path = Path(__file__).parent.parent / "config.yaml"
     with open(config_path) as f:
@@ -202,12 +254,18 @@ def main() -> None:
         config=config,
     )
 
-    out_path = Path(__file__).parent.parent / "data" / "latest-analysis.json"
-    out_path.parent.mkdir(exist_ok=True)
+    data_dir = Path(__file__).parent.parent / "data"
+    data_dir.mkdir(exist_ok=True)
+
+    out_path = data_dir / "latest-analysis.json"
     with open(out_path, "w") as f:
         json.dump(output, f, indent=2)
-
     print(f"Written to {out_path}")
+
+    history_path = data_dir / "ride-history.json"
+    append_history(activity, metrics, analysis_result, history_path)
+    print(f"History updated: {history_path}")
+
     print(f"Ride: {output['ride_type']}, {output['duration_minutes']} min, TSS {output['summary']['tss']}")
 
 
