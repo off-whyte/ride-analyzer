@@ -1,1 +1,25 @@
-[]
+[
+  {
+    "activity_id": "i138770339",
+    "date": "2026-04-10",
+    "week": "2026-W15",
+    "ride_type": "endurance/z2",
+    "duration_minutes": 53.8,
+    "avg_power": 145,
+    "normalized_power": 152,
+    "intensity_factor": 0.609,
+    "tss": 33.3,
+    "kj": 468.2,
+    "avg_hr": 134.6,
+    "ef": 1.132,
+    "hr_drift_pct": -0.7,
+    "zone_minutes": {
+      "z1": 13.7,
+      "z2": 37.2,
+      "z3": 2.5,
+      "z4": 0.2,
+      "z5": 0.2,
+      "z6": 0.0
+    }
+  }
+]
