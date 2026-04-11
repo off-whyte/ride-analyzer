@@ -160,23 +160,54 @@ function hrDriftColor(pct) {
 const REPO = 'off-whyte/ride-analyzer'
 const WORKFLOW = 'analyze-ride.yml'
 
+// Human-readable labels for workflow step names
+const STEP_LABELS = {
+  'actions/checkout@v4': 'Checking out code…',
+  'actions/setup-python@v5': 'Setting up Python…',
+  'Run pip install -r requirements.txt': 'Installing dependencies…',
+  'Run python src/action_runner.py': 'Fetching ride & running analysis…',
+  'Run git config user.name "Ride Analyzer Bot"': 'Saving results…',
+}
+
+function ghFetch(path, token, options = {}) {
+  return fetch(`https://api.github.com${path}`, {
+    ...options,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/vnd.github+json',
+      'Content-Type': 'application/json',
+      ...(options.headers || {}),
+    },
+  })
+}
+
 async function triggerWorkflow(token) {
-  const res = await fetch(
-    `https://api.github.com/repos/${REPO}/actions/workflows/${WORKFLOW}/dispatches`,
-    {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: 'application/vnd.github+json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ ref: 'main' }),
-    }
+  const res = await ghFetch(
+    `/repos/${REPO}/actions/workflows/${WORKFLOW}/dispatches`,
+    token,
+    { method: 'POST', body: JSON.stringify({ ref: 'main' }) }
   )
-  if (!res.ok) {
-    const text = await res.text()
-    throw new Error(`GitHub API ${res.status}: ${text}`)
-  }
+  if (!res.ok) throw new Error(`GitHub API ${res.status}: ${await res.text()}`)
+}
+
+async function findLatestRun(token, afterDate) {
+  const res = await ghFetch(`/repos/${REPO}/actions/runs?event=workflow_dispatch&per_page=5`, token)
+  if (!res.ok) return null
+  const { workflow_runs } = await res.json()
+  return workflow_runs.find(r =>
+    r.path?.includes(WORKFLOW) && new Date(r.created_at) >= afterDate
+  ) || null
+}
+
+async function getRunStep(token, runId) {
+  const res = await ghFetch(`/repos/${REPO}/actions/runs/${runId}/jobs`, token)
+  if (!res.ok) return null
+  const { jobs } = await res.json()
+  const job = jobs?.[0]
+  if (!job) return null
+  const inProgress = job.steps?.find(s => s.status === 'in_progress')
+  const conclusion = job.conclusion
+  return { stepName: inProgress?.name || null, conclusion, jobStatus: job.status }
 }
 
 export default function App() {
@@ -184,17 +215,58 @@ export default function App() {
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(true)
   const [triggering, setTriggering] = useState(false)
-  const [triggered, setTriggered] = useState(false)
+  const [runStatus, setRunStatus] = useState(null) // null | 'queued' | step label | 'done' | 'failed'
 
-  useEffect(() => {
-    fetch('data/latest-analysis.json')
+  function loadData() {
+    return fetch('data/latest-analysis.json')
       .then(r => {
         if (!r.ok) throw new Error(`HTTP ${r.status}`)
         return r.json()
       })
+  }
+
+  useEffect(() => {
+    loadData()
       .then(json => { setData(json); setLoading(false) })
       .catch(err => { setError(err.message); setLoading(false) })
   }, [])
+
+  async function pollRun(token, triggeredAt) {
+    // Wait briefly for the run to appear
+    await new Promise(r => setTimeout(r, 3000))
+    let runId = null
+    // Poll until we find the run (up to ~20s)
+    for (let i = 0; i < 10 && !runId; i++) {
+      const run = await findLatestRun(token, triggeredAt)
+      runId = run?.id || null
+      if (!runId) await new Promise(r => setTimeout(r, 2000))
+    }
+    if (!runId) { setRunStatus('failed'); return }
+
+    // Poll steps
+    while (true) {
+      const info = await getRunStep(token, runId)
+      if (!info) { await new Promise(r => setTimeout(r, 3000)); continue }
+
+      if (info.conclusion === 'success') {
+        setRunStatus('done')
+        // Reload analysis data
+        try {
+          const json = await loadData()
+          setData(json)
+          setError(null)
+        } catch (_) {}
+        return
+      }
+      if (info.conclusion && info.conclusion !== 'success') {
+        setRunStatus('failed')
+        return
+      }
+      const label = STEP_LABELS[info.stepName] || (info.stepName ? `${info.stepName}…` : 'Queued…')
+      setRunStatus(label)
+      await new Promise(r => setTimeout(r, 3000))
+    }
+  }
 
   async function handleTrigger() {
     let token = localStorage.getItem('gh_token')
@@ -207,17 +279,21 @@ export default function App() {
       token = token.trim()
     }
     setTriggering(true)
+    setRunStatus('queued')
+    const triggeredAt = new Date()
     try {
       await triggerWorkflow(token)
-      setTriggered(true)
     } catch (e) {
       if (e.message.includes('401') || e.message.includes('403')) {
         localStorage.removeItem('gh_token')
       }
       alert(`Failed to trigger workflow:\n${e.message}`)
-    } finally {
+      setRunStatus(null)
       setTriggering(false)
+      return
     }
+    setTriggering(false)
+    pollRun(token, triggeredAt)
   }
 
   if (loading) {
@@ -240,10 +316,10 @@ export default function App() {
           <div style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 16 }}>
             Run the analyzer to pull your latest ride from Intervals.icu.
           </div>
-          {triggered ? (
-            <div style={{ fontSize: 13, color: 'var(--green)' }}>
-              Analysis running… check back in a minute.
-            </div>
+          {runStatus && runStatus !== 'done' && runStatus !== 'failed' ? (
+            <div style={{ fontSize: 13, color: 'var(--green)' }}>{runStatus}</div>
+          ) : runStatus === 'failed' ? (
+            <div style={{ fontSize: 13, color: 'var(--red)' }}>Analysis failed — check GitHub Actions.</div>
           ) : (
             <button onClick={handleTrigger} disabled={triggering} style={styles.triggerBtn}>
               {triggering ? 'Starting…' : 'Analyze Latest Ride'}
@@ -265,8 +341,10 @@ export default function App() {
       <div style={styles.header}>
         <span style={styles.title}>Ride Analyzer</span>
         <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-          {triggered ? (
-            <span style={{ fontSize: 12, color: 'var(--green)' }}>Running…</span>
+          {runStatus && runStatus !== 'done' && runStatus !== 'failed' ? (
+            <span style={{ fontSize: 11, color: 'var(--green)', maxWidth: 140, textAlign: 'right' }}>{runStatus}</span>
+          ) : runStatus === 'failed' ? (
+            <span style={{ fontSize: 11, color: 'var(--red)' }}>Failed</span>
           ) : (
             <button onClick={handleTrigger} disabled={triggering} style={styles.triggerBtnSmall}>
               {triggering ? '…' : 'Run'}
