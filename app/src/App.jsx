@@ -231,8 +231,33 @@ async function getRunStep(token, runId) {
   const job = jobs?.[0]
   if (!job) return null
   const inProgress = job.steps?.find(s => s.status === 'in_progress')
+  const failedStep = job.steps?.find(s => s.conclusion === 'failure')
   const conclusion = job.conclusion
-  return { stepName: inProgress?.name || null, conclusion, jobStatus: job.status }
+  return { stepName: inProgress?.name || null, failedStepName: failedStep?.name || null, conclusion, jobId: job.id }
+}
+
+async function getFailureMessage(token, jobId) {
+  try {
+    const res = await ghFetch(`/repos/${REPO}/actions/jobs/${jobId}/logs`, token)
+    if (!res.ok) return null
+    const text = await res.text()
+    // Look for ERROR: lines written to stderr by action_runner.py
+    const match = text.match(/ERROR: (.+)/m)
+    if (match) return match[1].trim()
+    // Fall back to the last non-empty line before a process exit
+    const exitMatch = text.match(/Process completed with exit code \d+/)
+    if (exitMatch) {
+      const lines = text.split('\n')
+      const exitIdx = lines.findIndex(l => l.includes('Process completed with exit code'))
+      for (let i = exitIdx - 1; i >= 0; i--) {
+        const clean = lines[i].replace(/^\d{4}-\d{2}-\d{2}T[\d:.Z]+\s+/, '').trim()
+        if (clean && !clean.startsWith('##[')) return clean
+      }
+    }
+    return null
+  } catch {
+    return null
+  }
 }
 
 export default function App() {
@@ -273,7 +298,7 @@ export default function App() {
       runId = run?.id || null
       if (!runId) await new Promise(r => setTimeout(r, 2000))
     }
-    if (!runId) { setRunStatus('failed'); return }
+    if (!runId) { setRunStatus('Failed: could not find workflow run'); return }
 
     // Poll steps
     while (true) {
@@ -299,7 +324,8 @@ export default function App() {
         return
       }
       if (info.conclusion && info.conclusion !== 'success') {
-        setRunStatus('failed')
+        const msg = info.jobId ? await getFailureMessage(token, info.jobId) : null
+        setRunStatus(msg ? `Failed: ${msg}` : 'Failed: check GitHub Actions for details')
         return
       }
       const label = STEP_LABELS[info.stepName] || (info.stepName ? `${info.stepName}…` : 'Queued…')
@@ -358,8 +384,8 @@ export default function App() {
           </div>
           {runStatus && runStatus !== 'done' && runStatus !== 'failed' ? (
             <div style={{ fontSize: 13, color: 'var(--green)' }}>{runStatus}</div>
-          ) : runStatus === 'failed' ? (
-            <div style={{ fontSize: 13, color: 'var(--red)' }}>Analysis failed — check GitHub Actions.</div>
+          ) : runStatus?.startsWith('Failed') ? (
+            <div style={{ fontSize: 13, color: 'var(--red)' }}>{runStatus}</div>
           ) : (
             <button onClick={handleTrigger} disabled={triggering} style={styles.triggerBtn}>
               {triggering ? 'Starting…' : 'Analyze Latest Ride'}
@@ -385,8 +411,8 @@ export default function App() {
             <span style={{ fontSize: 11, color: 'var(--green)', maxWidth: 140, textAlign: 'right' }}>{runStatus}</span>
           ) : runStatus === 'up_to_date' ? (
             <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>Already up to date</span>
-          ) : runStatus === 'failed' ? (
-            <span style={{ fontSize: 11, color: 'var(--red)' }}>Failed</span>
+          ) : runStatus?.startsWith('Failed') ? (
+            <span style={{ fontSize: 11, color: 'var(--red)', maxWidth: 160, textAlign: 'right' }}>{runStatus}</span>
           ) : (
             <button onClick={handleTrigger} disabled={triggering} style={styles.triggerBtnSmall}>
               {triggering ? '…' : 'Run'}
