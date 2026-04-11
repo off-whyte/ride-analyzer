@@ -412,7 +412,7 @@ export default function App() {
           ) : runStatus === 'up_to_date' ? (
             <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>Already up to date</span>
           ) : runStatus?.startsWith('Failed') ? (
-            <span style={{ fontSize: 11, color: 'var(--red)', maxWidth: 160, textAlign: 'right' }}>{runStatus}</span>
+            <span style={{ fontSize: 11, color: 'var(--red)', maxWidth: 160, textAlign: 'right', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'block' }} title={runStatus}>{runStatus}</span>
           ) : (
             <button onClick={handleTrigger} disabled={triggering} style={styles.triggerBtnSmall}>
               {triggering ? '…' : 'Run'}
