@@ -13,7 +13,7 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,ico,png}'],
         runtimeCaching: [
           {
-            urlPattern: /\/data\/latest-analysis\.json$/,
+            urlPattern: /latest-analysis\.json/,
             handler: 'NetworkFirst',
             options: {
               cacheName: 'analysis-data',
