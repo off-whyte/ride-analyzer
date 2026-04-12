@@ -43,18 +43,20 @@ class IntervalsClient:
 
     CYCLING_TYPES = {"Ride", "VirtualRide", "EBikeRide", "MountainBikeRide", "GravelRide", "Handcycle"}
 
-    def get_latest_activity(self) -> Optional[Dict[str, Any]]:
-        """Return the most recent cycling activity."""
+    def get_latest_activity(self, types: Optional[set] = None) -> Optional[Dict[str, Any]]:
+        """Return the most recent activity matching the given types (defaults to cycling)."""
+        if types is None:
+            types = self.CYCLING_TYPES
         today = datetime.date.today()
         oldest = today - datetime.timedelta(days=14)
         activities = self.list_activities(oldest=oldest, newest=today + datetime.timedelta(days=1))
         if not activities:
             return None
-        rides = [a for a in activities if a.get("type") in self.CYCLING_TYPES]
-        if not rides:
+        matching = [a for a in activities if a.get("type") in types]
+        if not matching:
             return None
-        rides.sort(key=lambda a: a.get("start_date_local", ""), reverse=True)
-        return rides[0]
+        matching.sort(key=lambda a: a.get("start_date_local", ""), reverse=True)
+        return matching[0]
 
     def get_streams(self, activity_id: str) -> list:
         """Fetch 1-second stream data as parsed JSON (columnar format)."""
