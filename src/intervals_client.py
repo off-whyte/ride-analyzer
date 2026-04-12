@@ -47,7 +47,7 @@ class IntervalsClient:
         """Return the most recent cycling activity."""
         today = datetime.date.today()
         oldest = today - datetime.timedelta(days=14)
-        activities = self.list_activities(oldest=oldest, newest=today)
+        activities = self.list_activities(oldest=oldest, newest=today + datetime.timedelta(days=1))
         if not activities:
             return None
         rides = [a for a in activities if a.get("type") in self.CYCLING_TYPES]
