@@ -289,14 +289,16 @@ export default function App() {
   }, [])
 
   async function pollRun(token, triggeredAt, prevActivityId) {
-    // Wait briefly for the run to appear
-    await new Promise(r => setTimeout(r, 3000))
+    // Wait for the run to appear — give it a head start
+    await new Promise(r => setTimeout(r, 5000))
     let runId = null
-    // Poll until we find the run (up to ~20s)
-    for (let i = 0; i < 10 && !runId; i++) {
-      const run = await findLatestRun(token, triggeredAt)
+    // Allow 30s of slack on the timestamp to handle clock skew
+    const searchFrom = new Date(triggeredAt.getTime() - 30000)
+    // Poll until we find the run (up to ~45s)
+    for (let i = 0; i < 15 && !runId; i++) {
+      const run = await findLatestRun(token, searchFrom)
       runId = run?.id || null
-      if (!runId) await new Promise(r => setTimeout(r, 2000))
+      if (!runId) await new Promise(r => setTimeout(r, 3000))
     }
     if (!runId) { setRunStatus('Failed: could not find workflow run'); return }
 
