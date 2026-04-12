@@ -233,7 +233,7 @@ def main() -> None:
     today = datetime.date.today()
     recent_activities = client.list_activities(
         oldest=today - datetime.timedelta(days=14),
-        newest=today,
+        newest=today + datetime.timedelta(days=1),
     )
 
     ride = load_ride(activity_id=activity_id, streams_json=streams_json)
