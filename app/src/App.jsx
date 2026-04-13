@@ -270,7 +270,7 @@ export default function App() {
   const [historyData, setHistoryData] = useState([])
 
   function loadData() {
-    return fetch('data/latest-analysis.json')
+    return fetch(`data/latest-analysis.json?v=${Date.now()}`)
       .then(r => {
         if (!r.ok) throw new Error(`HTTP ${r.status}`)
         return r.json()
@@ -282,7 +282,7 @@ export default function App() {
       .then(json => { setData(json); setLoading(false) })
       .catch(err => { setError(err.message); setLoading(false) })
 
-    fetch('data/ride-history.json')
+    fetch(`data/ride-history.json?v=${Date.now()}`)
       .then(r => r.ok ? r.json() : [])
       .then(json => setHistoryData(json))
       .catch(() => {})
@@ -317,7 +317,7 @@ export default function App() {
             setError(null)
             setRunStatus('done')
             // Reload history too
-            fetch('data/ride-history.json')
+            fetch(`data/ride-history.json?v=${Date.now()}`)
               .then(r => r.ok ? r.json() : [])
               .then(h => setHistoryData(h))
               .catch(() => {})
