@@ -1,39 +1,39 @@
 {
-  "generated_at": "2026-04-13T13:51:26.025537Z",
-  "activity_id": "i139247245",
-  "activity_date": "2026-04-12T11:35:57",
+  "generated_at": "2026-04-13T19:22:06.216125Z",
+  "activity_id": "i139549684",
+  "activity_date": "2026-04-13T12:14:20",
   "ride_type": "Recovery",
-  "duration_minutes": 141.1,
+  "duration_minutes": 110.0,
   "summary": {
-    "avg_power": 135,
-    "normalized_power": 145,
-    "intensity_factor": 0.579,
-    "tss": 78.8,
-    "avg_hr": 127.3,
-    "max_hr": 144.0,
-    "avg_cadence": 84.5,
-    "avg_respiration": 29.6,
-    "distance_km": 60.0
+    "avg_power": 137,
+    "normalized_power": 149,
+    "intensity_factor": 0.596,
+    "tss": 65.1,
+    "avg_hr": 129.8,
+    "max_hr": 149.0,
+    "avg_cadence": 79.0,
+    "avg_respiration": 25.2,
+    "distance_km": 44.7
   },
   "aerobic_indicators": {
-    "hr_drift_pct": 4.2,
-    "cardiac_decoupling_pct": -1.7,
+    "hr_drift_pct": 1.2,
+    "cardiac_decoupling_pct": -5.8,
     "ef_trend": [
       {
         "minute": 0,
-        "ef": 0.754
+        "ef": 1.117
       },
       {
         "minute": 10,
-        "ef": 0.912
+        "ef": 1.042
       },
       {
         "minute": 20,
-        "ef": 1.123
+        "ef": 1.104
       },
       {
         "minute": 30,
-        "ef": 1.183
+        "ef": 1.109
       },
       {
         "minute": 40,
@@ -41,104 +41,88 @@
       },
       {
         "minute": 50,
-        "ef": 1.095
+        "ef": 1.172
       },
       {
         "minute": 60,
-        "ef": 1.177
+        "ef": 1.166
       },
       {
         "minute": 70,
-        "ef": 1.21
+        "ef": 1.126
       },
       {
         "minute": 80,
-        "ef": 1.179
+        "ef": 1.128
       },
       {
         "minute": 90,
-        "ef": 1.159
+        "ef": 1.164
       },
       {
         "minute": 100,
-        "ef": 1.13
-      },
-      {
-        "minute": 110,
-        "ef": 1.15
-      },
-      {
-        "minute": 120,
-        "ef": 1.038
+        "ef": 1.252
       }
     ],
     "resp_rate_trend": [
       {
         "minute": 0,
-        "resp": 24.2
+        "resp": 22.8
       },
       {
         "minute": 10,
-        "resp": 26.6
+        "resp": 25.9
       },
       {
         "minute": 20,
-        "resp": 30.2
+        "resp": 25.5
       },
       {
         "minute": 30,
-        "resp": 31.6
+        "resp": 26.3
       },
       {
         "minute": 40,
-        "resp": 31.2
+        "resp": 26.2
       },
       {
         "minute": 50,
-        "resp": 28.7
+        "resp": 24.7
       },
       {
         "minute": 60,
-        "resp": 30.1
+        "resp": 25.7
       },
       {
         "minute": 70,
-        "resp": 30.8
+        "resp": 25.3
       },
       {
         "minute": 80,
-        "resp": 26.8
+        "resp": 23.1
       },
       {
         "minute": 90,
-        "resp": 29.8
+        "resp": 24.7
       },
       {
         "minute": 100,
-        "resp": 28.9
-      },
-      {
-        "minute": 110,
-        "resp": 31.6
-      },
-      {
-        "minute": 120,
-        "resp": 31.7
+        "resp": 26.9
       }
     ]
   },
   "zone_distribution": {
-    "z1_minutes": 45.0,
-    "z2_minutes": 84.1,
-    "z3_minutes": 0.9,
-    "z4_minutes": 0.1,
-    "z5_minutes": 0.0,
-    "z6_minutes": 0.0
+    "z1_minutes": 36.7,
+    "z2_minutes": 64.2,
+    "z3_minutes": 6.5,
+    "z4_minutes": 2.2,
+    "z5_minutes": 0.2,
+    "z6_minutes": 0.2
   },
   "weekly_context": {
-    "total_hours": 0.0,
+    "total_hours": 1.8,
     "total_tss": 0.0,
-    "ride_count": 0,
+    "ride_count": 1,
     "hour_target": 10,
     "days_remaining_in_week": 7
   },
@@ -148,26 +132,26 @@
     "weeks_to_target": 21
   },
   "left_right_balance": {
-    "avg_left_pct": 54.9,
+    "avg_left_pct": 57.6,
     "flag": true
   },
   "next_workout": {
-    "type": "z2",
-    "description": "Your longest Z2 ride of the week. Target 102 minutes at Z2 power (150-187W). Keep HR controlled, no surges.",
-    "power_target": "137-187W",
-    "rationale": "Fresh after rest, 10.0 hours left in the week, 7 days remaining. Best day for a long aerobic effort."
+    "type": "rest",
+    "description": "Full rest or very easy 20-minute walk.",
+    "power_target": "\u2014",
+    "rationale": "15 consecutive riding days. Recovery is where adaptation happens \u2014 take a full rest day."
   },
   "analysis": {
     "observations": [
-      "Respiration trend: 27.4 \u2192 31.1 breaths/min (rising through ride).",
-      "EF range across 10-min windows: 0.75 \u2013 1.21 W/bpm"
+      "Respiration trend: 24.6 \u2192 25.1 breaths/min (stable through ride).",
+      "EF range across 10-min windows: 1.04 \u2013 1.25 W/bpm"
     ],
     "flags": [
-      "L/R balance: 54.9% left \u2014 consistently over 53/47 toward left. Worth monitoring for asymmetry."
+      "L/R balance: 57.6% left \u2014 consistently over 53/47 toward left. Worth monitoring for asymmetry."
     ],
     "positives": [
-      "HR drift: 4.2% over the ride \u2014 under 5% is solid for base building.",
-      "Cardiac decoupling: -1.7% \u2014 aerobic system is holding well."
+      "HR drift: 1.2% over the ride \u2014 under 5% is solid for base building.",
+      "Cardiac decoupling: -5.8% \u2014 aerobic system is holding well."
     ]
   }
 }

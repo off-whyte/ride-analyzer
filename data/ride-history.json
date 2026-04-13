@@ -67,5 +67,28 @@
       "z5": 0.0,
       "z6": 0.0
     }
+  },
+  {
+    "activity_id": "i139549684",
+    "date": "2026-04-13",
+    "week": "2026-W16",
+    "ride_type": "recovery",
+    "duration_minutes": 110.0,
+    "avg_power": 137,
+    "normalized_power": 149,
+    "intensity_factor": 0.596,
+    "tss": 65.1,
+    "kj": 907.3,
+    "avg_hr": 129.8,
+    "ef": 1.148,
+    "hr_drift_pct": 1.2,
+    "zone_minutes": {
+      "z1": 36.7,
+      "z2": 64.2,
+      "z3": 6.5,
+      "z4": 2.2,
+      "z5": 0.2,
+      "z6": 0.2
+    }
   }
 ]
