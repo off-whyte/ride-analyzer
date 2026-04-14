@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-13T19:22:06.216125Z",
+  "generated_at": "2026-04-14T14:40:30.076762Z",
   "activity_id": "i139549684",
   "activity_date": "2026-04-13T12:14:20",
   "ride_type": "Recovery",
@@ -124,7 +124,7 @@
     "total_tss": 0.0,
     "ride_count": 1,
     "hour_target": 10,
-    "days_remaining_in_week": 7
+    "days_remaining_in_week": 6
   },
   "season": {
     "current_phase": "base",
@@ -136,10 +136,10 @@
     "flag": true
   },
   "next_workout": {
-    "type": "rest",
-    "description": "Full rest or very easy 20-minute walk.",
-    "power_target": "\u2014",
-    "rationale": "15 consecutive riding days. Recovery is where adaptation happens \u2014 take a full rest day."
+    "type": "z2",
+    "description": "Your longest Z2 ride of the week. Target 98 minutes at Z2 power (150-187W). Keep HR controlled, no surges.",
+    "power_target": "137-187W",
+    "rationale": "Fresh after rest, 8.2 hours left in the week, 6 days remaining. Best day for a long aerobic effort."
   },
   "analysis": {
     "observations": [
