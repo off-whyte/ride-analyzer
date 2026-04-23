@@ -1,90 +1,98 @@
 {
-  "generated_at": "2026-04-19T17:23:30.645518Z",
-  "activity_id": "i141001655",
-  "activity_date": "2026-04-18T16:33:06",
+  "generated_at": "2026-04-23T02:00:52.939555Z",
+  "activity_id": "i142062561",
+  "activity_date": "2026-04-22T10:07:23",
   "ride_type": "Endurance/Z2",
-  "duration_minutes": 60.1,
+  "duration_minutes": 79.3,
   "summary": {
-    "avg_power": 153,
-    "normalized_power": 160,
-    "intensity_factor": 0.641,
-    "tss": 41.2,
-    "avg_hr": 129.0,
-    "max_hr": 144.0,
-    "avg_cadence": 90.4,
-    "avg_respiration": 29.0,
-    "distance_km": 33.1
+    "avg_power": 146,
+    "normalized_power": 156,
+    "intensity_factor": 0.623,
+    "tss": 51.3,
+    "avg_hr": 133.1,
+    "max_hr": 151.0,
+    "avg_cadence": 79.8,
+    "avg_respiration": 25.8,
+    "distance_km": 33.5
   },
   "aerobic_indicators": {
-    "hr_drift_pct": 0.6,
-    "cardiac_decoupling_pct": 5.3,
+    "hr_drift_pct": 8.0,
+    "cardiac_decoupling_pct": -7.1,
     "ef_trend": [
       {
         "minute": 0,
-        "ef": 1.236
+        "ef": 1.133
       },
       {
         "minute": 10,
-        "ef": 1.274
+        "ef": 1.115
       },
       {
         "minute": 20,
-        "ef": 1.264
+        "ef": 1.092
       },
       {
         "minute": 30,
-        "ef": 1.293
+        "ef": 1.132
       },
       {
         "minute": 40,
-        "ef": 1.157
+        "ef": 1.124
       },
       {
         "minute": 50,
-        "ef": 1.12
+        "ef": 1.173
+      },
+      {
+        "minute": 60,
+        "ef": 1.266
       }
     ],
     "resp_rate_trend": [
       {
         "minute": 0,
-        "resp": 25.1
+        "resp": 21.3
       },
       {
         "minute": 10,
-        "resp": 28.2
+        "resp": 24.9
       },
       {
         "minute": 20,
-        "resp": 30.3
+        "resp": 26.6
       },
       {
         "minute": 30,
-        "resp": 32.4
+        "resp": 23.2
       },
       {
         "minute": 40,
-        "resp": 29.6
+        "resp": 25.9
       },
       {
         "minute": 50,
-        "resp": 28.4
+        "resp": 27.5
+      },
+      {
+        "minute": 60,
+        "resp": 28.0
       }
     ]
   },
   "zone_distribution": {
-    "z1_minutes": 12.6,
-    "z2_minutes": 38.3,
-    "z3_minutes": 9.0,
-    "z4_minutes": 0.2,
-    "z5_minutes": 0.0,
-    "z6_minutes": 0.0
+    "z1_minutes": 19.5,
+    "z2_minutes": 52.0,
+    "z3_minutes": 7.0,
+    "z4_minutes": 0.5,
+    "z5_minutes": 0.2,
+    "z6_minutes": 0.1
   },
   "weekly_context": {
-    "total_hours": 10.1,
+    "total_hours": 3.2,
     "total_tss": 0.0,
-    "ride_count": 8,
+    "ride_count": 3,
     "hour_target": 10,
-    "days_remaining_in_week": 1
+    "days_remaining_in_week": 4
   },
   "season": {
     "current_phase": "base",
@@ -92,27 +100,28 @@
     "weeks_to_target": 20
   },
   "left_right_balance": {
-    "avg_left_pct": 53.0,
+    "avg_left_pct": 52.2,
     "flag": false
   },
   "next_workout": {
-    "type": "rest",
-    "description": "Weekly hour target hit. Take a rest day.",
-    "power_target": "\u2014",
-    "rationale": "You've hit your 10-hour target for the week. Well done."
+    "type": "z2",
+    "description": "Your longest Z2 ride of the week. Target 121 minutes at Z2 power (150-187W). Keep HR controlled, no surges.",
+    "power_target": "137-187W",
+    "rationale": "Fresh after rest, 6.8 hours left in the week, 4 days remaining. Best day for a long aerobic effort."
   },
   "analysis": {
     "observations": [
-      "Respiration trend: 26.3 \u2192 28.6 breaths/min (rising through ride).",
-      "L/R balance: 53.0% left \u2014 well balanced.",
-      "EF range across 10-min windows: 1.12 \u2013 1.29 W/bpm"
+      "Respiration trend: 23.1 \u2192 28.7 breaths/min (rising through ride).",
+      "L/R balance: 52.2% left \u2014 well balanced.",
+      "EF range across 10-min windows: 1.09 \u2013 1.27 W/bpm"
     ],
     "flags": [
-      "Cardiac decoupling: 5.3% (>5% = cardiovascular drift). Good sign that base work is pushing your limits."
+      "HR drift: 8.0% \u2014 above 5% suggests you may be approaching your aerobic ceiling at this intensity. Try easing off power slightly on long Z2 rides.",
+      "Significant respiration rate rise during the ride. Track this week over week \u2014 sustained rise at constant power signals aerobic drift."
     ],
     "positives": [
       "Good Z2 endurance ride \u2014 exactly what base phase calls for.",
-      "HR drift: 0.6% over the ride \u2014 under 5% is solid for base building."
+      "Cardiac decoupling: -7.1% \u2014 aerobic system is holding well."
     ]
   }
 }
