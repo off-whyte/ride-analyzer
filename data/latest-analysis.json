@@ -1,165 +1,173 @@
 {
-  "generated_at": "2026-04-26T21:09:12.481983Z",
-  "activity_id": "i143197998",
-  "activity_date": "2026-04-26T10:47:10",
+  "generated_at": "2026-05-03T20:45:20.118949Z",
+  "activity_id": "i145171139",
+  "activity_date": "2026-05-03T11:06:54",
   "ride_type": "Endurance/Z2",
-  "duration_minutes": 215.3,
+  "duration_minutes": 234.0,
   "summary": {
-    "avg_power": 144,
-    "normalized_power": 169,
-    "intensity_factor": 0.674,
-    "tss": 163.1,
-    "avg_hr": 135.2,
-    "max_hr": 166.0,
-    "avg_cadence": 77.0,
-    "avg_respiration": 30.1,
-    "distance_km": 96.6
+    "avg_power": 135,
+    "normalized_power": 151,
+    "intensity_factor": 0.605,
+    "tss": 142.7,
+    "avg_hr": 137.8,
+    "max_hr": 163.0,
+    "avg_cadence": 77.2,
+    "avg_respiration": 29.2,
+    "distance_km": 97.2
   },
   "aerobic_indicators": {
-    "hr_drift_pct": 6.6,
-    "cardiac_decoupling_pct": 2.4,
+    "hr_drift_pct": 3.6,
+    "cardiac_decoupling_pct": 13.8,
     "ef_trend": [
       {
         "minute": 0,
-        "ef": 1.195
+        "ef": 1.157
       },
       {
         "minute": 10,
-        "ef": 1.192
+        "ef": 1.167
       },
       {
         "minute": 20,
-        "ef": 1.343
+        "ef": 1.171
       },
       {
         "minute": 30,
-        "ef": 1.224
+        "ef": 1.118
       },
       {
         "minute": 40,
-        "ef": 1.318
+        "ef": 1.189
       },
       {
         "minute": 50,
-        "ef": 1.183
+        "ef": 1.225
       },
       {
         "minute": 60,
-        "ef": 1.208
+        "ef": 1.191
       },
       {
         "minute": 70,
-        "ef": 1.204
+        "ef": 1.174
       },
       {
         "minute": 80,
-        "ef": 1.213
+        "ef": 1.059
       },
       {
         "minute": 90,
-        "ef": 1.283
+        "ef": 1.143
       },
       {
         "minute": 100,
-        "ef": 1.179
+        "ef": 1.108
       },
       {
         "minute": 110,
-        "ef": 1.234
+        "ef": 1.065
       },
       {
         "minute": 120,
-        "ef": 1.129
+        "ef": 1.119
       },
       {
         "minute": 130,
-        "ef": 1.132
+        "ef": 1.043
       },
       {
         "minute": 140,
-        "ef": 1.283
+        "ef": 0.993
       },
       {
         "minute": 150,
-        "ef": 1.247
+        "ef": 1.056
       },
       {
         "minute": 160,
-        "ef": 1.344
+        "ef": 1.0
       },
       {
         "minute": 170,
-        "ef": 1.1
+        "ef": 0.948
       },
       {
         "minute": 180,
-        "ef": 1.332
+        "ef": 0.852
+      },
+      {
+        "minute": 190,
+        "ef": 0.98
+      },
+      {
+        "minute": 200,
+        "ef": 0.894
       }
     ],
     "resp_rate_trend": [
       {
         "minute": 0,
-        "resp": 23.2
+        "resp": 21.1
       },
       {
         "minute": 10,
-        "resp": 28.5
+        "resp": 26.1
       },
       {
         "minute": 20,
-        "resp": 30.1
+        "resp": 27.4
       },
       {
         "minute": 30,
-        "resp": 27.2
+        "resp": 27.4
       },
       {
         "minute": 40,
-        "resp": 31.6
+        "resp": 27.5
       },
       {
         "minute": 50,
-        "resp": 28.0
+        "resp": 28.7
       },
       {
         "minute": 60,
-        "resp": 30.4
+        "resp": 29.3
       },
       {
         "minute": 70,
-        "resp": 29.5
-      },
-      {
-        "minute": 80,
-        "resp": 30.5
-      },
-      {
-        "minute": 90,
-        "resp": 32.3
-      },
-      {
-        "minute": 100,
-        "resp": 30.8
-      },
-      {
-        "minute": 120,
-        "resp": 24.1
-      },
-      {
-        "minute": 130,
         "resp": 29.8
       },
       {
-        "minute": 140,
-        "resp": 30.9
+        "minute": 80,
+        "resp": 28.6
       },
       {
-        "minute": 150,
+        "minute": 90,
         "resp": 30.7
       },
       {
+        "minute": 100,
+        "resp": 29.9
+      },
+      {
+        "minute": 110,
+        "resp": 30.8
+      },
+      {
+        "minute": 130,
+        "resp": 24.9
+      },
+      {
+        "minute": 140,
+        "resp": 29.7
+      },
+      {
+        "minute": 150,
+        "resp": 31.7
+      },
+      {
         "minute": 160,
-        "resp": 32.2
+        "resp": 32.8
       },
       {
         "minute": 170,
@@ -167,20 +175,28 @@
       },
       {
         "minute": 180,
-        "resp": 32.8
+        "resp": 31.5
+      },
+      {
+        "minute": 190,
+        "resp": 29.4
+      },
+      {
+        "minute": 200,
+        "resp": 28.8
       }
     ]
   },
   "zone_distribution": {
-    "z1_minutes": 66.6,
-    "z2_minutes": 81.1,
-    "z3_minutes": 29.2,
-    "z4_minutes": 11.4,
-    "z5_minutes": 5.2,
-    "z6_minutes": 2.4
+    "z1_minutes": 81.0,
+    "z2_minutes": 112.9,
+    "z3_minutes": 17.6,
+    "z4_minutes": 3.6,
+    "z5_minutes": 1.0,
+    "z6_minutes": 0.8
   },
   "weekly_context": {
-    "total_hours": 11.3,
+    "total_hours": 8.3,
     "total_tss": 0.0,
     "ride_count": 7,
     "hour_target": 10,
@@ -189,31 +205,31 @@
   "season": {
     "current_phase": "base",
     "target_event": "CX Season Opener",
-    "weeks_to_target": 19
+    "weeks_to_target": 18
   },
   "left_right_balance": {
     "avg_left_pct": 53.5,
     "flag": true
   },
   "next_workout": {
-    "type": "rest",
-    "description": "Full rest or very easy 20-minute walk.",
-    "power_target": "\u2014",
-    "rationale": "5 consecutive riding days. Recovery is where adaptation happens \u2014 take a full rest day."
+    "type": "z2",
+    "description": "45-60 minute easy spin to round out the week. No intensity.",
+    "power_target": "137-187W",
+    "rationale": "Only 1.7 hours left to hit target with 1 days remaining. Easy volume to close the week without digging a hole."
   },
   "analysis": {
     "observations": [
-      "Respiration trend: 28.0 \u2192 32.1 breaths/min (rising through ride).",
-      "EF range across 10-min windows: 1.10 \u2013 1.34 W/bpm"
+      "Respiration trend: 26.1 \u2192 30.0 breaths/min (rising through ride).",
+      "EF range across 10-min windows: 0.85 \u2013 1.23 W/bpm"
     ],
     "flags": [
-      "You spent 53 minutes above Z2. In base, aim for under 10 minutes of Z3+ on endurance rides unless it's a planned tempo day.",
-      "HR drift: 6.6% \u2014 above 5% suggests you may be approaching your aerobic ceiling at this intensity. Try easing off power slightly on long Z2 rides.",
+      "You spent 25 minutes above Z2. In base, aim for under 10 minutes of Z3+ on endurance rides unless it's a planned tempo day.",
+      "Cardiac decoupling: 13.8% (>5% = cardiovascular drift). Good sign that base work is pushing your limits.",
       "L/R balance: 53.5% left \u2014 consistently over 53/47 toward left. Worth monitoring for asymmetry."
     ],
     "positives": [
       "Good Z2 endurance ride \u2014 exactly what base phase calls for.",
-      "Cardiac decoupling: 2.4% \u2014 aerobic system is holding well."
+      "HR drift: 3.6% over the ride \u2014 under 5% is solid for base building."
     ]
   }
 }
