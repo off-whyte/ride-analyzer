@@ -182,7 +182,7 @@ function hrDriftColor(pct) {
   return 'var(--red)'
 }
 
-const REPO = 'off-whyte/ride-analyzer'
+const REPO = 'bradbach/ride-analyzer'
 const WORKFLOW = 'analyze-ride.yml'
 
 // Human-readable labels for workflow step names
